@@ -1,20 +1,222 @@
 <!doctype html>
+<html lang="ko">
+<head>
 <meta charset="utf-8">
-<title>iops-leo</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>호롱 (Horong) — 따뜻한 라이트업 퍼즐</title>
+<meta name="description" content="어두운 방에 등불을 하나씩 놓아 모든 칸을 밝히는 코지 라이트업(Akari) 퍼즐. 시간 제한도, 실패의 벌도 없어요.">
+<meta property="og:title" content="호롱 (Horong) — 따뜻한 라이트업 퍼즐">
+<meta property="og:description" content="등불을 하나씩 밝히는 조용한 퍼즐. 오늘 밤엔 조금 천천히 쉬어가요.">
+<meta property="og:image" content="https://iops-leo.github.io/img/icon.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="img/icon.png">
 <style>
-  body{margin:0;background:#FFF8EF;color:#4A3B2E;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.7}
-  main{max-width:640px;margin:0 auto;padding:64px 24px}
-  h1{color:#C77B3F;font-size:1.5rem}
-  a{color:#C77B3F}
-  ul{padding-left:1.1em}
+  :root{
+    --bg:#FFF8EF; --surface:#FFFDF9; --line:#EFE3D0;
+    --ink:#4A3B2E; --soft:#8A7360;
+    --accent:#C77B3F; --glow:#FFC85C; --lit:#FFE7A0;
+    --night:#241A12;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+
+  /* 언어 토글 */
+  .lang{display:flex;justify-content:flex-end;gap:8px;padding:20px 0 0}
+  .lang button{
+    font:inherit;font-size:.85rem;color:var(--soft);background:none;
+    border:1px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer;
+  }
+  .lang button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* 히어로 */
+  header{text-align:center;padding:36px 0 8px}
+  header img.icon{width:104px;height:104px;border-radius:24px;box-shadow:0 8px 28px rgba(199,123,63,.22)}
+  h1{font-size:2rem;margin:20px 0 6px;letter-spacing:-.02em}
+  .tag{color:var(--soft);font-size:1.05rem;margin:0 0 26px}
+  .cta{
+    display:inline-flex;align-items:center;gap:9px;
+    background:var(--ink);color:var(--bg);text-decoration:none;
+    padding:13px 26px;border-radius:999px;font-weight:700;font-size:1rem;
+  }
+  .cta:hover{background:#3A2E23}
+
+  /* 스크린샷 */
+  .shots{display:flex;gap:14px;overflow-x:auto;padding:34px 0 8px;scroll-snap-type:x mandatory}
+  .shots img{
+    width:190px;flex:0 0 auto;border-radius:16px;border:1px solid var(--line);
+    scroll-snap-align:center;background:var(--surface);
+  }
+
+  /* 본문 */
+  section{padding:22px 0}
+  h2{font-size:1.15rem;margin:34px 0 10px;letter-spacing:-.01em}
+  h2 .dot{color:var(--glow)}
+  p{margin:0 0 14px}
+  .lead{font-size:1.08rem}
+
+  .promise{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 24px;margin:26px 0}
+  .promise h2{margin-top:0}
+  .promise ul{margin:0;padding-left:1.15em}
+  .promise li{margin:7px 0}
+
+  .horongi{display:block;width:76px;margin:34px auto 0}
+  .closing{text-align:center;color:var(--soft);font-size:1.05rem;margin:14px 0 8px}
+
+  footer{border-top:1px solid var(--line);margin-top:44px;padding:26px 0 60px;color:var(--soft);font-size:.9rem}
+  footer a{color:var(--accent)}
+  footer .row{display:flex;flex-wrap:wrap;gap:10px 22px;margin-bottom:10px}
+
+  [lang-block]{display:none}
+  [lang-block].on{display:block}
+
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#1E1710;--surface:#271E16;--line:#3A2D22;--ink:#F2E6D8;--soft:#B49E88}
+    .cta{background:var(--glow);color:#2A2018}
+    .cta:hover{background:#FFD98A}
+    header img.icon{box-shadow:0 8px 28px rgba(0,0,0,.5)}
+  }
 </style>
-<main>
-  <h1>호롱 (Horong)</h1>
-  <p>따뜻한 코지 라이트업 퍼즐.</p>
-  <ul>
-    <li><a href="https://play.google.com/store/apps/details?id=com.leo.horong">Google Play</a></li>
-    <li><a href="/horong-privacy/">개인정보처리방침</a></li>
-  </ul>
-  <p>문의: <a href="mailto:support@viralpulse.net">support@viralpulse.net</a></p>
-</main>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="lang">
+    <button id="btn-ko" aria-pressed="true">한국어</button>
+    <button id="btn-en" aria-pressed="false">English</button>
+  </div>
+
+  <header>
+    <img class="icon" src="img/icon.png" alt="호롱 앱 아이콘 — 등불 불꽃 정령">
+    <div lang-block="ko" class="on">
+      <h1>호롱</h1>
+      <p class="tag">등불을 하나씩 밝히는 조용한 퍼즐</p>
+      <a class="cta" href="https://play.google.com/store/apps/details?id=com.leo.horong">Google Play에서 받기</a>
+    </div>
+    <div lang-block="en">
+      <h1>Horong</h1>
+      <p class="tag">A cozy Light Up puzzle. One lamp at a time.</p>
+      <a class="cta" href="https://play.google.com/store/apps/details?id=com.leo.horong">Get it on Google Play</a>
+    </div>
+  </header>
+
+  <div lang-block="ko" class="on">
+    <div class="shots">
+      <img src="img/ko_02_home.png" alt="호롱 홈 화면" loading="lazy">
+      <img src="img/ko_01_play.png" alt="퍼즐 플레이 화면" loading="lazy">
+      <img src="img/ko_03_journey.png" alt="여정 화면 — 그림이 조각으로 열린다" loading="lazy">
+      <img src="img/ko_04_daily.png" alt="오늘의 등불" loading="lazy">
+    </div>
+
+    <section>
+      <p class="lead">어두운 방에 등불을 놓아 모든 칸을 밝히는 라이트업(Akari) 퍼즐이에요.
+      시간 제한도, 실패의 벌도, 갑자기 끼어드는 광고도 없어요. 숫자 힌트를 따라 천천히
+      생각하고, 한 칸씩 밝혀 나가면 돼요.</p>
+
+      <h2><span class="dot">·</span> 한 칸씩 밝혀 가는 여정</h2>
+      <p>쉬운 판에서 시작해 12×12 큰 판까지. 하나씩 깰 때마다 가려져 있던 그림이 조각으로
+      열리고, 챕터를 다 밝히면 한 장의 따뜻한 그림이 완성돼요.</p>
+
+      <h2><span class="dot">·</span> 작은 불꽃, 호롱이</h2>
+      <p>불꽃 정령 호롱이가 옆에서 함께해요. 별을 모아 새 옷을 입히고, 왕관이나 마법사
+      모자를 씌워 줄 수도 있어요.</p>
+
+      <h2><span class="dot">·</span> 오늘의 등불</h2>
+      <p>하루에 한 번, 그날만의 퍼즐이 찾아와요. 전 세계가 같은 판을 풀어요. 완주하면
+      연속 기록이 쌓이고, 결과를 친구에게 조용히 나눠줄 수 있어요.</p>
+
+      <h2><span class="dot">·</span> 조금 더 뜨겁게, 불꽃 질주</h2>
+      <p>기록에 도전하고 싶은 날엔 불꽃 질주 모드가 있어요. 시간이 다 되어도 벌 같은 건
+      없어요. “불이 꺼졌어요” 한 마디, 그리고 다시 시작하면 돼요.</p>
+
+      <div class="promise">
+        <h2>호롱의 작은 약속</h2>
+        <ul>
+          <li>광고를 억지로 보여주지 않아요. 원할 때만 켜는 보상형이에요.</li>
+          <li>유료 아이템은 전부 꾸미기용 장식이에요. 실력이나 진도에 영향 없어요.</li>
+          <li>인터넷이 없어도 플레이할 수 있어요.</li>
+          <li>회원가입도, 로그인도 없어요. 설치하면 바로 시작해요.</li>
+        </ul>
+      </div>
+
+      <img class="horongi" src="img/horongi.webp" alt="호롱이" loading="lazy">
+      <p class="closing">바쁜 하루의 끝에서, 등불 하나 켜고 쉬어 가요.</p>
+    </section>
+  </div>
+
+  <div lang-block="en">
+    <div class="shots">
+      <img src="img/en_02_home.png" alt="Horong home screen" loading="lazy">
+      <img src="img/en_01_play.png" alt="Puzzle board" loading="lazy">
+      <img src="img/en_03_journey.png" alt="Journey — the picture opens piece by piece" loading="lazy">
+      <img src="img/en_04_daily.png" alt="Daily lantern" loading="lazy">
+    </div>
+
+    <section>
+      <p class="lead">A small lantern, a dark room, and a picture waiting underneath.
+      Horong is a cozy Light Up (Akari) puzzle. Place little lantern spirits until every
+      cell glows — but never let two lights face each other.</p>
+
+      <h2><span class="dot">·</span> Light the room, reveal the picture</h2>
+      <p>Every level you finish lifts one piece of a hidden illustration. Finish a chapter
+      and the whole picture comes together.</p>
+
+      <h2><span class="dot">·</span> A little flame named Horongi</h2>
+      <p>Collect stars to dress Horongi up — outfits, crowns, a wizard hat. All of it is
+      purely for looks.</p>
+
+      <h2><span class="dot">·</span> A daily lantern, shared by everyone</h2>
+      <p>One puzzle a day, the same for every player in the world. Build a streak — and if
+      you miss a day, it forgives you once.</p>
+
+      <h2><span class="dot">·</span> And when you want tension — Flame Rush</h2>
+      <p>An opt-in time attack. Even here nothing is taken from you: when the timer ends,
+      the light simply goes out.</p>
+
+      <div class="promise">
+        <h2>Horong's small promises</h2>
+        <ul>
+          <li>No ads are forced on you. Rewarded only, and only when you choose.</li>
+          <li>Everything you can buy is decoration. Nothing changes difficulty or progress.</li>
+          <li>Plays fully offline.</li>
+          <li>No sign-up, no login. Install and start.</li>
+        </ul>
+      </div>
+
+      <img class="horongi" src="img/horongi.webp" alt="Horongi" loading="lazy">
+      <p class="closing">At the end of a long day, light one lamp and rest a while.</p>
+    </section>
+  </div>
+
+  <footer>
+    <div class="row">
+      <a href="https://play.google.com/store/apps/details?id=com.leo.horong">Google Play</a>
+      <a href="/horong-privacy/">개인정보처리방침 · Privacy</a>
+      <a href="mailto:support@viralpulse.net">support@viralpulse.net</a>
+    </div>
+    <div>쇼츠스토리 스튜디오 · Shortsstory Studio</div>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var blocks = document.querySelectorAll('[lang-block]');
+    var btns = { ko: document.getElementById('btn-ko'), en: document.getElementById('btn-en') };
+    function set(lang) {
+      blocks.forEach(function (b) { b.classList.toggle('on', b.getAttribute('lang-block') === lang); });
+      btns.ko.setAttribute('aria-pressed', lang === 'ko');
+      btns.en.setAttribute('aria-pressed', lang === 'en');
+      document.documentElement.lang = lang;
+    }
+    btns.ko.addEventListener('click', function () { set('ko'); });
+    btns.en.addEventListener('click', function () { set('en'); });
+    // 한국어 기기가 아니면 영어로 연다(앱의 로케일 정책과 같은 규칙).
+    if (!(navigator.language || '').toLowerCase().startsWith('ko')) set('en');
+  })();
+</script>
+</body>
+</html>
